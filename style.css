@@ -1,0 +1,718 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #3E0F12;
+    /* Dark Maroon */
+    margin: 0;
+    font-family: sans-serif;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    height: 100vh;
+    cursor: none;
+    /* Hide default cursor */
+}
+
+/* Custom Cursor */
+.cursor-dot {
+    width: 8px;
+    height: 8px;
+    background-color: white;
+    /* Will invert on dark/light due to mix-blend-mode */
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    z-index: 9999;
+    pointer-events: none;
+    mix-blend-mode: difference;
+}
+
+.cursor-outline {
+    width: 40px;
+    height: 40px;
+    border: 2px solid white;
+    /* Will invert */
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    z-index: 9998;
+    pointer-events: none;
+    mix-blend-mode: difference;
+    transition: width 0.2s, height 0.2s, background-color 0.2s;
+}
+
+/* Scroll Reveal Animations */
+.hidden {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 1s ease;
+}
+
+.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Staggered delay for child elements if needed */
+.skill-card:nth-child(2) {
+    transition-delay: 200ms;
+}
+
+.skill-card:nth-child(3) {
+    transition-delay: 400ms;
+}
+
+.timeline-item:nth-child(2) {
+    transition-delay: 300ms;
+}
+
+.timeline-item:nth-child(3) {
+    transition-delay: 600ms;
+}
+
+.container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    scroll-snap-align: start;
+}
+
+.content-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Center horizontally */
+    justify-content: center;
+    /* Ensure it takes up necessary space but remains centered */
+}
+
+/* "portfolio" text */
+.title {
+    font-family: 'Titan One', cursive;
+    font-size: 18vw;
+    /* Reduced from 25vw */
+    color: white;
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+@media (min-width: 1000px) {
+    .title {
+        font-size: 200px;
+    }
+}
+
+/* "Kasaraneni Harshitha" text */
+.subtitle {
+    font-family: 'Comforter Brush', cursive;
+    color: #FBC02D;
+    font-size: 7vw;
+    /* Increased size */
+    margin-top: -3%;
+    /* Pull it up specifically "Just below" */
+    position: relative;
+    z-index: 2;
+    font-weight: 400;
+    white-space: nowrap;
+    text-align: center;
+    /* Removed rotation and absolute positioning for cleaner flow below */
+    right: auto;
+    bottom: auto;
+    transform: none;
+}
+
+@media (min-width: 1000px) {
+    .subtitle {
+        font-size: 90px;
+        margin-top: -30px;
+    }
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 60px;
+    /* Compact width for glass effect strip if desired, or just icons */
+    height: auto;
+    z-index: 100;
+}
+
+.sidebar ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 20px 10px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.sidebar a {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 24px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+    color: #FBC02D;
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.1);
+}
+
+.nav-text {
+    position: absolute;
+    right: 60px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    font-family: sans-serif;
+}
+
+.sidebar a:hover .nav-text {
+    opacity: 1;
+    visibility: visible;
+    right: 50px;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        right: 10px;
+    }
+
+    .sidebar ul {
+        padding: 15px 8px;
+        gap: 20px;
+    }
+
+    .sidebar a {
+        font-size: 20px;
+        width: 35px;
+        height: 35px;
+    }
+}
+
+/* About Section */
+.about-section {
+    height: 100vh;
+    /* Changed from min-height to fixed height for better snap feel */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    width: 100%;
+    scroll-snap-align: start;
+}
+
+.section-title {
+    font-family: 'Bodoni Moda', serif;
+    /* Changed from Satisfy to match 'The Seasons' style */
+    font-size: 80px;
+    color: white;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    font-weight: 700;
+    /* Ensure it's bold/prominent */
+}
+
+/* Browser Window */
+.browser-window {
+    background: white;
+    width: 95%;
+    /* Increased width */
+    max-width: 1000px;
+    /* Increased from 800px */
+    min-height: 60vh;
+    /* Ensure substantial height */
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    animation: fadeIn 1s ease-out;
+    display: flex;
+    flex-direction: column;
+}
+
+.window-header {
+    background: #e0e0e0;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    gap: 15px;
+}
+
+.dots {
+    display: flex;
+    gap: 8px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.red {
+    background-color: #ff5f56;
+}
+
+.yellow {
+    background-color: #ffbd2e;
+}
+
+.green {
+    background-color: #27c93f;
+}
+
+.address-bar {
+    background: white;
+    height: 24px;
+    border-radius: 12px;
+    flex-grow: 1;
+    margin-left: 10px;
+    /* Spacing from dots */
+}
+
+.window-content {
+    padding: 40px;
+    font-family: 'Caveat', cursive;
+    font-size: 1.8rem;
+    /* Increased size for handwritten font readability */
+    color: #333;
+    line-height: 1.6;
+    text-align: left;
+}
+
+.window-content p {
+    margin-bottom: 20px;
+}
+
+.window-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* Media Queries for About Section */
+@media (max-width: 768px) {
+    .section-title {
+        font-size: 50px;
+    }
+
+    .window-content {
+        padding: 20px;
+        font-size: 1rem;
+    }
+}
+
+/* Skills Section */
+.skills-section {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    scroll-snap-align: start;
+    padding: 20px;
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    max-width: 1000px;
+    width: 90%;
+}
+
+.skill-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    transition: transform 0.3s ease, background 0.3s ease;
+    cursor: default;
+}
+
+.skill-card:hover {
+    transform: translateY(-10px);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.skill-card i {
+    font-size: 60px;
+    color: #FBC02D;
+}
+
+.skill-card span {
+    font-family: 'Titan One', cursive;
+    /* Keeping with the theme, or Sans-serif for readability? Titan One is headings. */
+    font-family: sans-serif;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .skills-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .skill-card {
+        padding: 20px;
+    }
+
+    .skill-card i {
+        font-size: 40px;
+    }
+
+    .skill-card span {
+        font-size: 1.2rem;
+    }
+}
+
+/* Education Section */
+.education-section {
+    min-height: 100vh;
+    /* Use min-height to allow expansion */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    scroll-snap-align: start;
+    padding: 120px 20px 40px 20px;
+    /* Significantly increased top padding to avoid overlap */
+    gap: 40px;
+}
+
+.timeline {
+    position: relative;
+    max-width: 800px;
+    width: 90%;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+/* Vertical Line */
+.timeline::after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    background-color: rgba(255, 255, 255, 0.3);
+    top: 0;
+    bottom: 0;
+    left: 20px;
+    /* Align to the left side */
+    margin-left: -2px;
+    border-radius: 2px;
+}
+
+.timeline-item {
+    padding: 0 40px;
+    /* Removed vertical padding, added margin below */
+    margin-bottom: 60px;
+    /* Increased gap between timelines */
+    position: relative;
+    background-color: inherit;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Timeline Dot */
+.timeline-dot {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    left: 20px;
+    /* Match lines left position */
+    background-color: #FBC02D;
+    border: 4px solid #3E0F12;
+    /* Match background to create a 'cutout' look */
+    top: 50%;
+    /* Center vertically relative to the card */
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.timeline-content {
+    padding: 30px 40px;
+    background: rgba(255, 255, 255, 0.05);
+    /* Lighter/Cleaner glass */
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    border-radius: 4px;
+    /* Sharper corners for cleaner look */
+    color: white;
+    font-family: 'Bodoni Moda', serif;
+    /* The Seasons style */
+    transition: transform 0.3s ease;
+}
+
+.timeline-content:hover {
+    transform: translateX(10px);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.timeline-content h3 {
+    font-size: 2rem;
+    /* Larger title */
+    margin-bottom: 10px;
+    color: #FBC02D;
+    font-family: 'Bodoni Moda', serif;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.timeline-content h4 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.9);
+    font-family: 'Bodoni Moda', serif;
+    font-style: italic;
+}
+
+.timeline-date {
+    display: inline-block;
+    background: transparent;
+    /* Cleaner look without background box */
+    padding: 0;
+    border-radius: 0;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    font-family: 'Bodoni Moda', serif;
+    font-weight: 600;
+}
+
+/* Specific Text Colors */
+.white-text {
+    color: white !important;
+}
+
+.yellow-text {
+    color: #FBC02D !important;
+    font-weight: bold;
+}
+
+.timeline-content p {
+    font-size: 1.1rem;
+    margin: 0;
+    font-family: 'Bodoni Moda', serif;
+}
+
+/* Mobile Tweaks */
+@media (max-width: 600px) {
+    .timeline::after {
+        left: 20px;
+    }
+
+    .timeline-dot {
+        left: 20px;
+    }
+
+    .timeline-item {
+        padding-left: 50px;
+        padding-right: 10px;
+    }
+
+    .timeline-content h3 {
+        font-size: 1.3rem;
+    }
+}
+
+/* Skills Grid Update */
+.skills-grid-browsers {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    max-width: 1200px;
+    width: 95%;
+    padding-bottom: 40px;
+}
+
+.skill-browser {
+    background: white;
+    width: 350px;
+    /* Fixed width for uniformity */
+    min-height: 200px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease;
+}
+
+.skill-browser:hover {
+    transform: translateY(-5px);
+}
+
+.address-bar-small {
+    background: #f0f0f0;
+    height: 24px;
+    border-radius: 12px;
+    flex-grow: 1;
+    margin-left: 10px;
+    font-family: 'Bodoni Moda', serif;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    color: #555;
+    font-weight: 600;
+}
+
+.window-content-small {
+    padding: 20px;
+    background: white;
+    flex-grow: 1;
+}
+
+.window-content-small ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.window-content-small li {
+    font-family: 'Bodoni Moda', serif;
+    font-size: 1.1rem;
+    color: #333;
+    padding: 8px 0;
+    border-bottom: 1px dashed #eee;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.window-content-small li:last-child {
+    border-bottom: none;
+}
+
+.window-content-small i {
+    color: #FBC02D;
+    width: 25px;
+    /* Fixed width for icons alignment */
+    text-align: center;
+}
+
+/* Mobile Tweaks */
+@media (max-width: 768px) {
+    .skills-grid-browsers {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .skill-browser {
+        width: 100%;
+        max-width: 400px;
+    }
+}
+
+/* Contact Section */
+.contact-section {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    scroll-snap-align: start;
+    padding: 20px;
+}
+
+.contact-icons {
+    display: flex;
+    gap: 60px;
+    margin-top: 40px;
+}
+
+.contact-icon {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 5rem;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    /* Bouncy transition */
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.contact-icon:hover {
+    color: #FBC02D;
+    transform: scale(1.2) translateY(-10px);
+    filter: drop-shadow(0 0 15px rgba(251, 192, 45, 0.6));
+}
+
+/* Specific adjustments if needed */
+.contact-icon i {
+    display: block;
+}
+
+/* Mobile Tweaks */
+@media (max-width: 600px) {
+    .contact-icons {
+        gap: 30px;
+    }
+
+    .contact-icon {
+        font-size: 3.5rem;
+    }
+}

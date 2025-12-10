@@ -5,8 +5,8 @@
 }
 
 body {
-    background-color: #3E0F12;
-    /* Dark Maroon */
+    background: linear-gradient(135deg, #3E0F12 0%, #000000 100%);
+    /* Dark Maroon to Black Gradient */
     margin: 0;
     font-family: sans-serif;
     overflow-x: hidden;
@@ -15,6 +15,34 @@ body {
     height: 100vh;
     cursor: none;
     /* Hide default cursor */
+}
+
+/* Tech Grid Background Animation */
+.tech-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    /* Behind everything */
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    /* Size of the grid squares */
+    animation: gridMove 20s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes gridMove {
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: 50px 50px;
+    }
 }
 
 /* Custom Cursor */
@@ -102,15 +130,27 @@ body {
     font-family: 'Titan One', cursive;
     font-size: 18vw;
     /* Reduced from 25vw */
-    color: white;
+    color: transparent;
+    /* Transparent for background clip */
+    background: linear-gradient(to right, #666666 0%, #FFFFFF 50%, #666666 100%);
+    /* Silver/Glossy Gradient */
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: shine 5s linear infinite;
     line-height: 0.9;
     letter-spacing: -0.05em;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     position: relative;
     z-index: 1;
     margin: 0;
     padding: 0;
     text-align: center;
+}
+
+@keyframes shine {
+    to {
+        background-position: 200% center;
+    }
 }
 
 @media (min-width: 1000px) {
@@ -120,28 +160,59 @@ body {
 }
 
 /* "Kasaraneni Harshitha" text */
+/* "Kasaraneni Harshitha" text with Typewriter Effect */
 .subtitle {
-    font-family: 'Comforter Brush', cursive;
+    font-family: 'Fira Code', monospace;
     color: #FBC02D;
-    font-size: 7vw;
-    /* Increased size */
-    margin-top: -3%;
-    /* Pull it up specifically "Just below" */
+    font-size: 5vw;
+    /* Increased size as requested */
+    margin-top: 10px;
     position: relative;
     z-index: 2;
-    font-weight: 400;
+    font-weight: 600;
     white-space: nowrap;
     text-align: center;
-    /* Removed rotation and absolute positioning for cleaner flow below */
-    right: auto;
-    bottom: auto;
-    transform: none;
+    overflow: hidden;
+    /* Ensures the content is not revealed until the animation */
+    border-right: .15em solid #FBC02D;
+    /* Block cursor for techy feel */
+    letter-spacing: .05em;
+    animation:
+        typing 3.5s steps(30, end),
+        blink-caret .75s step-end infinite;
+    max-width: fit-content;
+    padding-right: 5px;
+}
+
+/* The typing effect */
+@keyframes typing {
+    from {
+        width: 0
+    }
+
+    to {
+        width: 100%
+    }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+
+    from,
+    to {
+        border-color: transparent
+    }
+
+    50% {
+        border-color: #FBC02D;
+    }
 }
 
 @media (min-width: 1000px) {
     .subtitle {
-        font-size: 90px;
-        margin-top: -30px;
+        font-size: 60px;
+        /* Larger desktop size */
+        margin-top: 0px;
     }
 }
 
@@ -253,9 +324,17 @@ body {
     font-family: 'Bodoni Moda', serif;
     /* Changed from Satisfy to match 'The Seasons' style */
     font-size: 80px;
-    color: white;
+    color: transparent;
+    /* Transparent for background clip */
+    background: linear-gradient(to right, #666666 0%, #FFFFFF 50%, #666666 100%);
+    /* Silver/Glossy Gradient */
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: shine 5s linear infinite;
     margin-bottom: 30px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    text-shadow: none;
+    /* Remove shadow to let gloss shine */
     text-align: center;
     font-weight: 700;
     /* Ensure it's bold/prominent */
@@ -584,9 +663,98 @@ body {
     gap: 30px;
     max-width: 1200px;
     width: 95%;
+
+
     padding-bottom: 40px;
 }
 
+/* Specific Icon Colors */
+/* Specific Icon Colors scoped to Skill Browser */
+.skill-browser .fa-html5 {
+    color: #e34c26 !important;
+}
+
+.skill-browser .fa-css3-alt {
+    color: #264de4 !important;
+}
+
+.skill-browser .fa-js {
+    color: #f7df1e !important;
+}
+
+.skill-browser .fa-java {
+    color: #e76f00 !important;
+}
+
+.skill-browser .fa-python {
+    color: #3776ab !important;
+}
+
+.skill-browser .fa-c {
+    color: #00599C !important;
+}
+
+/* AI/ML */
+.skill-browser .fa-brain {
+    color: #EE4C2C !important;
+}
+
+/* PyTorch Orange */
+.skill-browser .fa-shapes {
+    color: #FF6F00 !important;
+}
+
+/* TensorFlow Orange */
+.skill-browser .fa-eye {
+    color: #5C3EE8 !important;
+}
+
+/* OpenCV Blue/Purple */
+.skill-browser .fa-chart-line {
+    color: #4CAF50 !important;
+}
+
+/* Data Green */
+
+/* Backend */
+.skill-browser .fa-bolt {
+    color: #009688 !important;
+}
+
+/* FastAPI Teal */
+.skill-browser .fa-leaf {
+    color: #6db33f !important;
+}
+
+/* Spring Green */
+.skill-browser .fa-database {
+    color: #4479a1 !important;
+}
+
+/* MySQL Blue */
+
+/* Tools */
+.skill-browser .fa-git-alt {
+    color: #F1502F !important;
+}
+
+/* GitHub removed to revert to default behavior (Black text/Yellow icon or context specific) */
+/* .skill-browser .fa-github { color: #181717 !important; } */
+
+/* CS Fundamentals */
+.skill-browser .fa-layer-group {
+    color: #FFD700 !important;
+}
+
+.skill-browser .fa-microchip {
+    color: #00BCD4 !important;
+}
+
+.skill-browser .fa-cubes {
+    color: #9C27B0 !important;
+}
+
+/* Skill Browser Animation */
 .skill-browser {
     background: white;
     width: 350px;
@@ -598,10 +766,51 @@ body {
     display: flex;
     flex-direction: column;
     transition: transform 0.3s ease;
+    opacity: 0;
+    transform: scale(0.8) translateY(50px);
+}
+
+.skill-browser.show {
+    animation: popUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Staggered Delays for Pop Animation */
+.skill-browser:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.skill-browser:nth-child(2) {
+    animation-delay: 0.3s;
+}
+
+.skill-browser:nth-child(3) {
+    animation-delay: 0.5s;
+}
+
+.skill-browser:nth-child(4) {
+    animation-delay: 0.7s;
+}
+
+.skill-browser:nth-child(5) {
+    animation-delay: 0.9s;
+}
+
+@keyframes popUp {
+    0% {
+        opacity: 0;
+        transform: scale(0.8) translateY(50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
 }
 
 .skill-browser:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5px) scale(1.02) !important;
+    /* Override animation final state on hover */
+    transition: transform 0.3s ease;
 }
 
 .address-bar-small {
@@ -647,10 +856,11 @@ body {
 }
 
 .window-content-small i {
-    color: #FBC02D;
     width: 25px;
     /* Fixed width for icons alignment */
     text-align: center;
+    color: #FBC02D;
+    /* Default color (Yellow) for icons not overridden */
 }
 
 /* Mobile Tweaks */
@@ -663,6 +873,8 @@ body {
     .skill-browser {
         width: 100%;
         max-width: 400px;
+        animation-delay: 0.1s !important;
+        /* Instant pop on scroll for mobile */
     }
 }
 

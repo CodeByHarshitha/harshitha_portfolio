@@ -87,4 +87,90 @@ document.addEventListener('DOMContentLoaded', () => {
         el.classList.add('hidden'); // Initialize as hidden
         scrollObserver.observe(el);
     });
+
+    // Letter-by-Letter Typing Animation for About Section
+    const aboutParagraphs = document.querySelectorAll('.window-content p');
+    const originalTexts = [];
+
+    // Store original text and clear content initially
+    aboutParagraphs.forEach(p => {
+        originalTexts.push(p.innerText);
+        p.innerText = '';
+        p.style.borderRight = '2px solid #333'; // Typing cursor
+        p.style.display = 'inline-block'; // Needed for cursor to sit next to text
+        p.style.width = '100%'; // Ensure it takes full width
+        p.style.borderRight = 'none'; // Remove cursor initially
+    });
+
+    const typeWriterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                typeWriterObserver.unobserve(entry.target);
+                typeSequence(0);
+            }
+        });
+    }, { threshold: 0.3 });
+
+    // Observe the About section to start animation
+    const aboutSection = document.querySelector('#about');
+    if (aboutSection) {
+        typeWriterObserver.observe(aboutSection);
+    }
+
+    function typeSequence(pIndex) {
+        if (pIndex >= aboutParagraphs.length) return;
+
+        const p = aboutParagraphs[pIndex];
+        const text = originalTexts[pIndex];
+        let charIndex = 0;
+
+        // Add blink cursor style
+        p.style.borderRight = '3px solid #FBC02D';
+        p.style.paddingRight = '5px';
+
+        function typeChar() {
+            if (charIndex < text.length) {
+                p.textContent += text.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeChar, 15); // Fast typing speed (15ms)
+            } else {
+                p.style.borderRight = 'none'; // Remove cursor when done
+                p.style.paddingRight = '0';
+                setTimeout(() => typeSequence(pIndex + 1), 200); // Small pause before next paragraph
+            }
+        }
+
+        typeChar();
+    }
+
+    // Falling Icons Animation for Skills Section
+    const fallingIconsContainer = document.querySelector('.falling-icons');
+    if (fallingIconsContainer) {
+        const icons = [
+            'fa-code', 'fa-laptop-code', 'fa-terminal', 'fa-microchip',
+            'fa-network-wired', 'fa-database', 'fa-server', 'fa-mobile-alt',
+            'fa-bug', 'fa-project-diagram', 'fa-cogs', 'fa-code-branch'
+        ];
+
+        // Create 50 falling icons for global coverage
+        for (let i = 0; i < 50; i++) {
+            const icon = document.createElement('i');
+            const randomIcon = icons[Math.floor(Math.random() * icons.length)];
+
+            icon.classList.add('fas', randomIcon, 'falling-icon');
+
+            // Randomize properties
+            const left = Math.random() * 100; // 0% to 100%
+            const duration = Math.random() * 10 + 5; // 5s to 15s
+            const delay = Math.random() * 10; // 0s to 10s delay
+            const size = Math.random() * 30 + 10; // 10px to 40px
+
+            icon.style.left = `${left}%`;
+            icon.style.animationDuration = `${duration}s`;
+            icon.style.animationDelay = `${delay}s`;
+            icon.style.fontSize = `${size}px`;
+
+            fallingIconsContainer.appendChild(icon);
+        }
+    }
 });
